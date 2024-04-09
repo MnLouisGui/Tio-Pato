@@ -1,5 +1,6 @@
 public class Agencia {
-    private int codigo;
+    int codigo;
+    static int contador;
 
     public void setCodigo(int codigo) {
         this.codigo = codigo;
@@ -9,6 +10,7 @@ public class Agencia {
     }
 
     Agencia(){
-
+        contador++;  
+        this.codigo=this.codigo+contador;
     }
 }

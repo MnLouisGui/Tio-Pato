@@ -1,7 +1,10 @@
 public class Conta {
     private Double saldo;
-    Cliente cliente;
-    Agencia agencia;
+    private Cliente cliente;
+    private Agencia agencia;
+
+    static int contador;
+    int codigo;
 
     //Get and Set
     public Double getSaldo() {
@@ -25,18 +28,26 @@ public class Conta {
         this.cliente = cliente;
     }
 
-    Conta(Double saldo){
-        this.saldo=saldo;
-    }
-    //Construtor
     Conta(){
 
     }
 
+    public Conta(Double saldo, Agencia agencia, Cliente cliente){
+        this.saldo=saldo;
+        this.agencia=agencia;
+        this.cliente=cliente;
+        contador++;  
+        this.codigo=this.codigo+contador; 
+    }
+
     //Metodos
+    public void tipo(){
+
+    }
+
     void sacar(Double valor){
         if(this.saldo<valor){
-            System.out.println("Você sacau um valor maior que seu Salda\nVocê está em debito!!!");
+            System.out.println("Você sacau um valor maior que seu Saldo\nVocê está em debito!!!");
         }
         this.saldo=this.saldo-valor;
     }
@@ -53,9 +64,16 @@ public class Conta {
         this.saldo=this.saldo+valor;
     }
 
-    void consultar(){
+    void consultar(Conta poupança, Cliente cli){
         System.out.println("___________________________");
         System.out.println("--------- Consulta --------");
-        System.out.println("Agência:"+agencia.getCodigo()+"\nCliente"+cliente.getNome()+"\nSaldo: R$"+this.saldo+"0");
+        System.out.println("Numero: "+this.codigo+"\nAgência:"+agencia.getCodigo()+"\nCliente: "+this.cliente.getNome()+"\nCpf: "+cli.getCad_unico());
+        this.tipo();
+        System.out.println("Saldo: R$"+this.saldo+"0"+"\nSaldo na poupança: "+poupança.saldo+"0");
+    }
+    void transferir(Conta destino, Double valor){
+        this.tipo();
+        destino.saldo=destino.saldo+valor;
+        this.saldo=this.saldo-valor;
     }
 }

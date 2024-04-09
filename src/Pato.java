@@ -1,16 +1,16 @@
 import java.util.*;
-import java.lang.*;
 
 public class Pato {
     public static void main(String[] args) throws InterruptedException{
-        Conta conta1=new Conta(0.0);
-        Conta conta2=new Conta();
-        Cliente cliente1=new Cliente();
+
+        Conta conta1=new C_corrente(1000.0, null, null);//poli
+        Conta conta2=new C_poupanca(1000.0, null, null);//poli
+        Cliente cliente1=new Cliente_p_fisica(null);//poli
+        Cliente_p_fisica fisico=(Cliente_p_fisica) cliente1;
+        fisico.setCpf("612.131.131-51");
         Agencia agencia1=new Agencia();
         
-        Boolean on=false;
-        int login=0;
-        agencia1.setCodigo(1001);
+        Boolean on=true;
         cliente1.setNome("Ribamar");
         
         conta1.setCliente(cliente1);
@@ -18,37 +18,18 @@ public class Pato {
 
         Scanner scanner=new Scanner(System.in);
         System.out.println("________ Duck Bank _______");
-        while(on==false){
-            System.out.println("__________________________");
-            System.out.println("---------- Login ---------");
-            System.out.println("Olá "+cliente1.getNome()+", qual conta deseja acessar?");
-            System.out.println("1.Conta 1\n2.Conta 2");
-            int op=scanner.nextInt();
-            switch(op){
-                case 1:
-                    login=1;
-                    on=true;
-                    break;
-                case 2:
-                    login=2;
-                    on=true;
-                    break;
-                default:
-                    on=false;
-                    System.out.println("Opção invalida");
-            }
-        }
         while (on==true) {
             System.out.println("__________________________");
             System.out.println("---------- Menu ----------");
-            System.out.println("1.Sacar\n2.Recarga\n3.Deposito\n4.Consultar\n5.Deslogar");
+            System.out.println("1.Sacar\n2.Recarga\n3.Deposito\n4.Consultar\n5.Transferir\n6.Deslogar");
             int op=scanner.nextInt();
             switch (op) {
                 case 1:
                     System.out.println("___________________________");
                     System.out.println("---------- Sacar ----------");
                     System.out.println("Cliente: "+cliente1.getNome());
-                    System.out.println("Agência: "+agencia1.getCodigo());    
+                    System.out.println("Agência: "+agencia1.getCodigo());
+                    conta1.tipo();    
                     System.out.println("Quanto deseja sacar?");
                     Double sacar=scanner.nextDouble();
                     System.out.print("Sacando R$"+sacar+"0");
@@ -61,6 +42,7 @@ public class Pato {
                 case 2:
                     System.out.println("___________________________");
                     System.out.println("--------- Recarga ---------");
+                    conta1.tipo();
                     System.out.println("Como deseja recarregar?\n1.R$20,00\n2.Outro Valor");
                     op=scanner.nextInt();
                     switch (op) {
@@ -86,7 +68,8 @@ public class Pato {
                     break;
                 case 3:
                     System.out.println("___________________________");
-                    System.out.println("--------- Deposito --------");
+                    System.out.println("--------- Deposito --------"); 
+                    conta1.tipo();
                     System.out.println("Quanto deseja depositar?");
                     Double valor=scanner.nextDouble();
                     System.out.print("Depositando R$"+valor+"0");
@@ -97,13 +80,46 @@ public class Pato {
 
                     break;
                 case 4:
-                    conta1.consultar();
+                    conta1.consultar(conta2, cliente1);
                     System.out.println("1.Voltar");
                     op=scanner.nextInt(); 
                     break;
                 case 5:
-                    login=0;
-                    on=false;
+                    System.out.println("___________________________");
+                    System.out.println("------ Transferencia ------"); 
+                    System.out.println("Para qual conta deseja Trasnferir?\n1.Corrente para Poupança\n2.Poupança para Corrente");
+                    op=scanner.nextInt();
+                    switch (op) {
+                        case 1:
+                            System.out.println("Quanto deseja transferir?");
+                            valor=scanner.nextDouble();
+                            System.out.print("Transferindo R$"+valor+"0");
+                            Thread.sleep(750);System.out.print("."); Thread.sleep(750); System.out.print(".");Thread.sleep(750); System.out.print(".\n"); Thread.sleep(500);
+                            System.out.println("Transferência feita para Conta Poupança!!!");
+                            Thread.sleep(1500);
+                            Conta destino=conta2;
+                            conta1.transferir(destino, valor);
+                            Thread.sleep(1500);
+                            break;
+                        case 2:
+                            System.out.println("Quanto deseja transferir?");
+                            valor=scanner.nextDouble();
+                            System.out.print("Transferindo R$"+valor+"0");
+                            Thread.sleep(750);System.out.print("."); Thread.sleep(750); System.out.print(".");Thread.sleep(750); System.out.print(".\n"); Thread.sleep(500);
+                            System.out.println("Transferência feita para Conta Corrente!!!");
+                            Thread.sleep(1500);
+                            destino=conta1;
+                            conta2.transferir(destino, valor);
+                            Thread.sleep(1500);
+                            break;
+                        default:
+                            System.out.println("Opção errada");
+                            break;
+                    }
+
+                    break;
+                case 6:
+                    on=false; 
                     break;
                 default:
                     System.out.println("Opção errada");
