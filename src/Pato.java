@@ -4,24 +4,52 @@ public class Pato {
     public static void main(String[] args) throws InterruptedException{
 
         Conta conta1=new C_corrente(1000.0, null, null);//poli
-        Conta conta2=new C_poupanca(1000.0, null, null);//poli
+        Conta conta2=new C_corrente(1000.0, null, null);//poli
+        Conta conta3=new C_corrente(1000.0, null, null);
         Cliente cliente1=new Cliente_p_fisica(null);//poli
         Cliente_p_fisica fisico=(Cliente_p_fisica) cliente1;
-        fisico.setCpf("612.131.131-51");
         Agencia agencia1=new Agencia();
         
-        Boolean on=true;
-        cliente1.setNome("Ribamar");
-        
+        Boolean on=false;
+
         conta1.setCliente(cliente1);
         conta1.setAgencia(agencia1);
 
         Scanner scanner=new Scanner(System.in);
-        System.out.println("________ Duck Bank _______");
+        System.out.println("__________ Duck Bank _________");
+        System.out.println("---------- Cadastro ----------\nQual é o seu nome?");
+        String nome=scanner.nextLine(); 
+        cliente1.setNome(nome);
+        System.out.println("Qual é o seu CPF?");
+        String cpf=scanner.nextLine(); 
+        fisico.setCpf(cpf);
+        System.out.println("Crie uma senha:");
+        String senha=scanner.nextLine(); 
+        cliente1.setSenha(senha);
+
+        while (on==false) {
+            System.out.println("___________________________");
+            System.out.println("---------- Login ----------");
+            System.out.println("digite seu CPF:");
+            cpf = scanner.nextLine();
+            System.out.println("digite sua senha:");
+            senha = scanner.nextLine();
+            System.out.print("Vericando");
+            Thread.sleep(750);System.out.print("."); Thread.sleep(750); System.out.print(".");Thread.sleep(750); System.out.print(".\n"); Thread.sleep(500);
+            if (cliente1.validarCpf(cpf) && cliente1.validarSenha(senha)) {
+                System.out.println("Login realizado com sucesso!");
+                Thread.sleep(2000);
+                on=true;
+            } else {
+                System.out.println("CPF ou senha inválidos.");
+                Thread.sleep(2000);
+            }
+
+        }
         while (on==true) {
             System.out.println("__________________________");
             System.out.println("---------- Menu ----------");
-            System.out.println("1.Sacar\n2.Recarga\n3.Deposito\n4.Consultar\n5.Transferir\n6.Deslogar");
+            System.out.println("1.Sacar\n2.Recarga\n3.Deposito\n4.Consultar\n5.Transferir\n6.Extrato\n7.Sair");
             int op=scanner.nextInt();
             switch (op) {
                 case 1:
@@ -89,36 +117,11 @@ public class Pato {
                     System.out.println("------ Transferencia ------"); 
                     System.out.println("Para qual conta deseja Trasnferir?\n1.Corrente para Poupança\n2.Poupança para Corrente");
                     op=scanner.nextInt();
-                    switch (op) {
-                        case 1:
-                            System.out.println("Quanto deseja transferir?");
-                            valor=scanner.nextDouble();
-                            System.out.print("Transferindo R$"+valor+"0");
-                            Thread.sleep(750);System.out.print("."); Thread.sleep(750); System.out.print(".");Thread.sleep(750); System.out.print(".\n"); Thread.sleep(500);
-                            System.out.println("Transferência feita para Conta Poupança!!!");
-                            Thread.sleep(1500);
-                            Conta destino=conta2;
-                            conta1.transferir(destino, valor);
-                            Thread.sleep(1500);
-                            break;
-                        case 2:
-                            System.out.println("Quanto deseja transferir?");
-                            valor=scanner.nextDouble();
-                            System.out.print("Transferindo R$"+valor+"0");
-                            Thread.sleep(750);System.out.print("."); Thread.sleep(750); System.out.print(".");Thread.sleep(750); System.out.print(".\n"); Thread.sleep(500);
-                            System.out.println("Transferência feita para Conta Corrente!!!");
-                            Thread.sleep(1500);
-                            destino=conta1;
-                            conta2.transferir(destino, valor);
-                            Thread.sleep(1500);
-                            break;
-                        default:
-                            System.out.println("Opção errada");
-                            break;
-                    }
 
                     break;
                 case 6:
+                    break;
+                case 7:
                     on=false; 
                     break;
                 default:

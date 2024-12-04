@@ -12,4 +12,9 @@ public class Cliente_p_fisica extends Cliente{
     public Cliente_p_fisica(String nome){
         super(nome);
     }
+
+    @Override
+    public boolean validarCpf(String cpfInformada) {
+        return this.cpf.equals(cpfInformada);
+    }
 }
