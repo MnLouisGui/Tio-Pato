@@ -6,6 +6,11 @@ public class Conta {
     static int contador;
     int codigo;
 
+    // Códigos ANSI para cores
+    public static final String ANSI_RESET = "\u001B[0m";   // Reseta a cor
+    public static final String ANSI_GREEN = "\u001B[32m";  // Verde
+    public static final String ANSI_RED = "\u001B[31m";    // Vermelho
+
     //Get and Set
     public Double getSaldo() {
         return saldo;
@@ -28,13 +33,10 @@ public class Conta {
         this.cliente = cliente;
     }
 
-    Conta(){
-
-    }
-
     public Conta(Double saldo, Agencia agencia, Cliente cliente){
         this.saldo=saldo;
         this.agencia=agencia;
+        this.cliente=cliente;  
         this.cliente=cliente;
         contador++;  
         this.codigo=this.codigo+contador; 
@@ -50,18 +52,22 @@ public class Conta {
             System.out.println("Você sacau um valor maior que seu Saldo\nVocê está em debito!!!");
         }
         this.saldo=this.saldo-valor;
+        cliente.adicionarTransacao(ANSI_RED+"Saque", valor);
     }
 
     void recarga(){
         this.saldo=this.saldo-20.0;
+        cliente.adicionarTransacao(ANSI_RED+"Recarga", 20.0);
     }
 
     void recarga(Double valor){
         this.saldo=this.saldo-valor;
+        cliente.adicionarTransacao(ANSI_RED+"Recarga", valor);
     }
 
     void deposito(Double valor){
         this.saldo=this.saldo+valor;
+        cliente.adicionarTransacao(ANSI_GREEN+"Depósito", valor); 
     }
 
     void consultar(Conta poupança, Cliente cli){
@@ -75,5 +81,10 @@ public class Conta {
         this.tipo();
         destino.saldo=destino.saldo+valor;
         this.saldo=this.saldo-valor;
+        // Determinar o tipo da conta destino
+        String tipoContaDestino = (destino instanceof C_corrente) ? ANSI_GREEN+"Conta Corrente" : ANSI_RED+"Conta Poupança";
+
+        // Adicionar a transação ao extrato
+        this.cliente.adicionarTransacao("Transferência para " + tipoContaDestino, valor);
     }
 }
